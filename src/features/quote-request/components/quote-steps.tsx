@@ -60,10 +60,10 @@ export function ProductStep({ product, errors, visible, onChange, onBlur }: {
     <div className="grid min-w-0 gap-5">
       <div className="grid min-w-0 gap-5 sm:grid-cols-2">
         <Field id="product.name" label="Product name" error={nameError} required>
-          <Input id="product.name" autoComplete="off" aria-required="true" {...fieldA11y("product.name", nameError)} maxLength={120} onBlur={() => onBlur("product.name")} onChange={(event) => onChange("name", event.currentTarget.value)} placeholder="What product are you looking for?" required value={product.name} />
+          <Input id="product.name" autoComplete="off" {...fieldA11y("product.name", nameError)} maxLength={120} onBlur={() => onBlur("product.name")} onChange={(event) => onChange("name", event.currentTarget.value)} placeholder="What product are you looking for?" required value={product.name} />
         </Field>
         <Field id="product.quantity" label="Quantity" error={quantityError} required>
-          <Input id="product.quantity" aria-required="true" {...fieldA11y("product.quantity", quantityError, "product.quantity-hint")} inputMode="numeric" max={10_000} min={1} onBlur={() => onBlur("product.quantity")} onChange={(event) => onChange("quantity", event.currentTarget.value === "" ? Number.NaN : Number(event.currentTarget.value))} required step={1} type="number" value={Number.isNaN(product.quantity) ? "" : product.quantity} />
+          <Input id="product.quantity" {...fieldA11y("product.quantity", quantityError, "product.quantity-hint")} inputMode="numeric" max={10_000} min={1} onBlur={() => onBlur("product.quantity")} onChange={(event) => onChange("quantity", event.currentTarget.value === "" ? Number.NaN : Number(event.currentTarget.value))} required step={1} type="number" value={Number.isNaN(product.quantity) ? "" : product.quantity} />
           <span className="sr-only" id="product.quantity-hint">Enter a whole number from 1 to 10,000.</span>
         </Field>
       </div>
@@ -132,11 +132,11 @@ export function ContactStep({ contact, errors, visible, methodChosen, onName, on
   return (
     <div className="grid min-w-0 gap-5">
       <Field id="contact.name" label="Full name" error={nameError} required>
-        <Input id="contact.name" autoComplete="name" aria-required="true" {...fieldA11y("contact.name", nameError)} maxLength={120} onBlur={() => onBlur("contact.name")} onChange={(event) => onName(event.currentTarget.value)} required value={contact.name} />
+        <Input id="contact.name" autoComplete="name" {...fieldA11y("contact.name", nameError)} maxLength={120} onBlur={() => onBlur("contact.name")} onChange={(event) => onName(event.currentTarget.value)} required value={contact.name} />
       </Field>
       <div className="grid min-w-0 gap-5 sm:grid-cols-2">
         <Field id="contact.phone" label="Phone / WhatsApp" error={phoneError} required hint="Use a number where we can reach you.">
-          <Input id="contact.phone" autoComplete="tel" aria-required="true" {...fieldA11y("contact.phone", phoneError, "contact.phone-hint")} maxLength={30} onBlur={() => onBlur("contact.phone")} onChange={(event) => onPhone(event.currentTarget.value)} required type="tel" value={contact.phone} />
+          <Input id="contact.phone" autoComplete="tel" {...fieldA11y("contact.phone", phoneError, "contact.phone-hint")} maxLength={30} onBlur={() => onBlur("contact.phone")} onChange={(event) => onPhone(event.currentTarget.value)} required type="tel" value={contact.phone} />
         </Field>
         <Field id="contact.email" label="Email" error={emailError} hint="Optional.">
           <Input id="contact.email" autoCapitalize="none" autoComplete="email" {...fieldA11y("contact.email", emailError, "contact.email-hint")} maxLength={254} onBlur={() => onBlur("contact.email")} onChange={(event) => onEmail(event.currentTarget.value)} type="email" value={contact.email ?? ""} />

@@ -4,6 +4,7 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
+import { getAdminFirestore } from "@/lib/firebase/admin";
 
 export const metadata: Metadata = {
   title: "Request Received",
@@ -11,6 +12,22 @@ export const metadata: Metadata = {
   alternates: { canonical: "/request/success" },
   robots: { index: false, follow: false },
 };
+
+async function requestExists(reference: string) {
+  try {
+    const result = await getAdminFirestore()
+      .collection("quoteRequests")
+      .where("reference", "==", reference)
+      .limit(1)
+      .get();
+    return !result.empty;
+  } catch (error) {
+    console.error("[quote-request] Success reference verification failed", {
+      errorCode: error instanceof Error ? error.name.slice(0, 64) : "unknown_error",
+    });
+    return false;
+  }
+}
 
 type SuccessPageProps = {
   searchParams: Promise<{ reference?: string | string[] }>;
@@ -20,6 +37,7 @@ export default async function RequestSuccessPage({ searchParams }: SuccessPagePr
   const params = await searchParams;
   const reference = Array.isArray(params.reference) ? params.reference[0] : params.reference;
   if (!reference || !/^RQ-\d{4}-[0-9A-HJKMNP-TV-Z]{10}$/.test(reference)) notFound();
+  if (!(await requestExists(reference))) notFound();
 
   return (
     <section className="py-12 sm:py-16">
