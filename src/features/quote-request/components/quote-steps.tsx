@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { PREFERRED_CONTACT_METHODS, SOURCING_COUNTRIES, TIMELINES, type PreferredContactMethod, type QuoteRequestDraftInput, type SourcingCountry, type Timeline } from "../domain/quote-request";
+import { PREFERRED_CONTACT_METHODS, SOURCING_COUNTRIES, TIMELINES, type PreferredContactMethod, type SourcingCountry, type Timeline } from "../domain/quote-request";
+import type { QuoteRequestDraftInput } from "../schemas/quote-request";
 import type { SelectedProductImage } from "./image-picker";
 
 type Errors = Record<string, string>;
@@ -42,13 +43,13 @@ function Field({ id, label, hint, error, required, children }: {
   );
 }
 
-export function ProductStep({ product, errors, visible, onChange, onBlur, imagePicker }: {
+export function ProductStep({ product, errors, visible, onChange, onBlur }: {
   product: QuoteRequestDraftInput["product"];
   errors: Errors;
   visible: (field: string) => boolean;
   onChange: <K extends keyof QuoteRequestDraftInput["product"]>(field: K, value: QuoteRequestDraftInput["product"][K]) => void;
   onBlur: BlurHandler;
-  imagePicker: ReactNode;
+
 }) {
   const nameError = visible("product.name") ? errors["product.name"] : undefined;
   const urlError = visible("product.url") ? errors["product.url"] : undefined;
@@ -72,7 +73,7 @@ export function ProductStep({ product, errors, visible, onChange, onBlur, imageP
       <Field id="product.description" label="Description" error={descriptionError} hint="Share any model, size, color, specification or quality requirements.">
         <Textarea id="product.description" {...fieldA11y("product.description", descriptionError, "product.description-hint")} maxLength={2000} onBlur={() => onBlur("product.description")} onChange={(event) => onChange("description", event.currentTarget.value)} placeholder="Add useful details about what you need." value={product.description ?? ""} />
       </Field>
-      {imagePicker}
+
     </div>
   );
 }
@@ -191,13 +192,14 @@ export function ReviewStep({ draft, images, onEdit }: {
   const optional = (value?: string) => value?.trim() ? value : <span className="text-muted">Not provided</span>;
   const method = draft.contact.preferredContactMethod;
   const methodLabel = method === "WHATSAPP" ? "WhatsApp" : method === "PHONE" ? "Phone" : "Email";
+  const productUrl = draft.product.url?.trim();
   return (
     <div className="grid gap-6">
       <EditSection label="product details" title="Product" onEdit={() => onEdit(0)}>
         <dl className="grid gap-4 sm:grid-cols-2">
           <ReviewValue label="Product name">{draft.product.name.trim()}</ReviewValue>
           <ReviewValue label="Quantity">{draft.product.quantity}</ReviewValue>
-          <ReviewValue label="Product URL">{draft.product.url?.trim() ? <a className="break-all text-primary underline underline-offset-2" href={draft.product.url} rel="noreferrer" target="_blank">{draft.product.url}</a> : <span className="text-muted">Not provided</span>}</ReviewValue>
+          <ReviewValue label="Product URL">{productUrl ? (/^https?:\/\//i.test(productUrl) ? <a className="break-all text-primary underline underline-offset-2" href={productUrl} rel="noreferrer" target="_blank">{productUrl}</a> : <span className="break-all">{productUrl}</span>) : <span className="text-muted">Not provided</span>}</ReviewValue>
           <ReviewValue label="Description">{optional(draft.product.description)}</ReviewValue>
           <div className="sm:col-span-2"><ReviewValue label="Selected images">
             {images.length ? <ul className="mt-2 grid list-none grid-cols-3 gap-2 p-0 sm:grid-cols-5">{images.map((image) => <li className="min-w-0" key={image.id}><Image alt={`Preview of ${image.file.name}`} className="aspect-square w-full rounded-control object-cover" height={100} src={image.previewUrl} unoptimized width={100} /><span className="mt-1 block break-all text-xs text-muted">{image.file.name}</span></li>)}</ul> : <span className="text-muted">None selected</span>}

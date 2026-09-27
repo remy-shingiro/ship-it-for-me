@@ -2,17 +2,13 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import {
-  PREFERRED_CONTACT_METHODS,
-  type PreferredContactMethod,
-  type QuoteRequestDraftInput,
-  type SourcingCountry,
-  type Timeline,
-} from "../domain/quote-request";
+import { PREFERRED_CONTACT_METHODS, type PreferredContactMethod, type SourcingCountry, type Timeline } from "../domain/quote-request";
+import type { QuoteRequestDraftInput } from "../schemas/quote-request";
 import { ImagePicker, type SelectedProductImage } from "./image-picker";
 import { ContactStep, ProductStep, RequirementsStep, ReviewStep } from "./quote-steps";
 import { QuoteProgress } from "./quote-progress";
@@ -184,7 +180,7 @@ export function QuoteForm() {
             <QuoteProgress currentStep={step} />
             <form className="mt-6" noValidate onSubmit={submit} ref={formRef}>
               <div aria-labelledby="quote-step-heading">
-                <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl" id="quote-step-heading" ref={headingRef} tabIndex={-1}>
+                <h2 className="text-2xl font-semibold tracking-tight text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:text-3xl" id="quote-step-heading" ref={headingRef} tabIndex={-1}>
                   {stepHeadings[step]}
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted">{stepDescriptions[step]}</p>
@@ -194,16 +190,7 @@ export function QuoteForm() {
                 {step === 0 ? (
                   <ProductStep
                     errors={errors}
-                    imagePicker={<ImagePicker
-                      error={imageError || undefined}
-                      images={images}
-                      onAdd={(added) => setImages((existing) => [...existing, ...added])}
-                      onError={setImageError}
-                      onRemove={(id) => {
-                        setImages((existing) => existing.filter((image) => image.id !== id));
-                        setImageError("");
-                      }}
-                    />}
+
                     onBlur={blurField}
                     onChange={changeProduct}
                     product={draft.product}
@@ -238,12 +225,25 @@ export function QuoteForm() {
                 {step === 3 ? <ReviewStep draft={draft} images={images} onEdit={editStep} /> : null}
               </div>
 
+              <div className={step === 0 ? "mt-5" : "hidden"} hidden={step !== 0}>
+                <ImagePicker
+                  error={imageError || undefined}
+                  images={images}
+                  onAdd={(added) => setImages((existing) => [...existing, ...added])}
+                  onError={setImageError}
+                  onRemove={(id) => {
+                    setImages((existing) => existing.filter((image) => image.id !== id));
+                    setImageError("");
+                  }}
+                />
+              </div>
+
               <div className="sticky bottom-0 z-10 -mx-4 mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-border bg-surface/95 px-4 py-4 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:px-0 sm:pb-0 sm:pt-6 sm:backdrop-blur-none">
                 <div>
                   {step === 0 ? (
-                    <a className="inline-flex min-h-11 items-center rounded-control px-3 text-sm font-semibold text-muted hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="/">
+                    <Link className="inline-flex min-h-11 items-center rounded-control px-3 text-sm font-semibold text-muted hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="/">
                       Back to home
-                    </a>
+                    </Link>
                   ) : <Button onClick={goBack} type="button" variant="secondary">Back</Button>}
                 </div>
                 <Button disabled={nextDisabled} type="submit">{step === 3 ? "Submit Request" : "Continue"}</Button>
