@@ -378,5 +378,4 @@ export async function submitQuoteRequest(formData: FormData): Promise<SubmitQuot
     return { success: false, code: "PERSISTENCE_ERROR", message: genericSubmissionError };
   }
 
-  return { success: true, reference };
 }
