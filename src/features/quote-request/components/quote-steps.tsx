@@ -62,13 +62,12 @@ export function ProductStep({ product, errors, visible, onChange, onBlur }: {
         <Field id="product.name" label="Product name" error={nameError} required>
           <Input id="product.name" autoComplete="off" {...fieldA11y("product.name", nameError)} maxLength={120} onBlur={() => onBlur("product.name")} onChange={(event) => onChange("name", event.currentTarget.value)} placeholder="What product are you looking for?" required value={product.name} />
         </Field>
-        <Field id="product.quantity" label="Quantity" error={quantityError} required>
+        <Field id="product.quantity" label="Quantity" error={quantityError} hint="Enter a whole number from 1 to 10,000." required>
           <Input id="product.quantity" {...fieldA11y("product.quantity", quantityError, "product.quantity-hint")} inputMode="numeric" max={10_000} min={1} onBlur={() => onBlur("product.quantity")} onChange={(event) => onChange("quantity", event.currentTarget.value === "" ? Number.NaN : Number(event.currentTarget.value))} required step={1} type="number" value={Number.isNaN(product.quantity) ? "" : product.quantity} />
-          <span className="sr-only" id="product.quantity-hint">Enter a whole number from 1 to 10,000.</span>
         </Field>
       </div>
-      <Field id="product.url" label="Product URL" error={urlError} hint="Optional. Paste a link from a marketplace or supplier website.">
-        <Input id="product.url" {...fieldA11y("product.url", urlError, "product.url-hint")} autoCapitalize="none" autoComplete="url" maxLength={2048} onBlur={() => onBlur("product.url")} onChange={(event) => onChange("url", event.currentTarget.value)} placeholder="https://" type="url" value={product.url ?? ""} />
+      <Field id="product.url" label="Product link (optional)" error={urlError} hint="Paste a link to the product if you found it online.">
+        <Input id="product.url" {...fieldA11y("product.url", urlError, "product.url-hint")} autoCapitalize="none" autoComplete="url" maxLength={2048} onBlur={() => onBlur("product.url")} onChange={(event) => onChange("url", event.currentTarget.value)} placeholder="https://example.com/product" type="url" value={product.url ?? ""} />
       </Field>
       <Field id="product.description" label="Description" error={descriptionError} hint="Share any model, size, color, specification or quality requirements.">
         <Textarea id="product.description" {...fieldA11y("product.description", descriptionError, "product.description-hint")} maxLength={2000} onBlur={() => onBlur("product.description")} onChange={(event) => onChange("description", event.currentTarget.value)} placeholder="Add useful details about what you need." value={product.description ?? ""} />

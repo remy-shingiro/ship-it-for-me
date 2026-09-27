@@ -9,7 +9,7 @@ export function LocationCard({ name, href, slug, index, description }: (typeof l
       <div aria-hidden="true" className={"location-art location-art--" + slug}>
         <span className="location-art-index">SOURCING LOCATION {index}</span>
         <span className="location-art-orbit" />
-        <span className="location-art-label">Rwanda to {name}</span>
+        <span className="location-art-label">Sourcing from {name}</span>
       </div>
       <div className="location-card-copy">
         <div>

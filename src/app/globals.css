@@ -6,7 +6,7 @@
   --surface: #fff;
   --surface-muted: #f0f1eb;
   --foreground: #19251f;
-  --muted: #66716b;
+  --muted: #505b55;
   --primary: #165b45;
   --primary-hover: #104735;
   --on-primary: #fff;
@@ -113,7 +113,7 @@ button, input, select, textarea { font: inherit; }
 .value-point::before { width: .55rem; height: .55rem; flex: 0 0 auto; margin-top: .35rem; border-radius: 50%; background: var(--accent); content: ""; }
 .process-grid { display: grid; gap: 1.75rem; }
 .process-step { border-top: 1px solid var(--border-strong); padding-top: 1.25rem; }
-.process-number { display: block; margin-bottom: 1.25rem; color: var(--accent); font-size: .8rem; font-weight: 750; letter-spacing: .1em; }
+.process-number { display: block; margin-bottom: 1.25rem; color: var(--primary); font-size: .8rem; font-weight: 750; letter-spacing: .1em; }
 .process-title { margin: 0 0 .65rem; font-size: 1.15rem; font-weight: 650; letter-spacing: -.02em; }
 .process-description { max-width: 19rem; margin: 0; color: var(--muted); font-size: .94rem; line-height: 1.65; }
 .categories-section { background: var(--surface-muted); }

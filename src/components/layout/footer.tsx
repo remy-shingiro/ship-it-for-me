@@ -25,7 +25,7 @@ export function Footer() {
           <nav aria-label="Footer navigation">
             <h2 className="footer-heading">Explore</h2>
             <ul className="footer-links">
-              {navigationLinks.map(({ label, href }) => <li key={href}><Link className="footer-link" href={href}>{label}</Link></li>)}
+              {navigationLinks.filter(({ href }) => href !== "/locations").map(({ label, href }) => <li key={href}><Link className="footer-link" href={href}>{label}</Link></li>)}
             </ul>
           </nav>
           <nav aria-label="Sourcing locations">

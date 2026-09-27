@@ -43,10 +43,17 @@ export default async function RequestSuccessPage({ searchParams }: SuccessPagePr
     <section className="py-12 sm:py-16">
       <Container>
         <Card className="mx-auto max-w-2xl rounded-panel px-5 py-8 sm:px-9 sm:py-10">
+          <div aria-hidden="true" className="mb-5 grid h-12 w-12 place-items-center rounded-full bg-primary-soft text-primary">
+            <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
+              <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+            </svg>
+          </div>
           <p className="eyebrow">Quote request</p>
           <Heading as="h1" className="mt-2 text-3xl sm:text-4xl">Request received</Heading>
-          <p className="mt-5 text-sm font-medium text-muted">Your request reference:</p>
-          <p className="mt-1 font-mono text-xl font-semibold tracking-wide text-foreground">{reference}</p>
+          <div className="mt-6 rounded-control border border-border bg-surface-muted p-4 sm:p-5">
+            <p className="m-0 text-sm font-medium text-muted">Your request reference</p>
+            <p className="mb-0 mt-2 break-all font-mono text-lg font-semibold tracking-wide text-foreground sm:text-xl">{reference}</p>
+          </div>
           <p className="body-copy mt-4 !text-base">We&apos;ve received your request and our team will review it. We&apos;ll contact you using your preferred contact method.</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <ButtonLink href="/">Back to home</ButtonLink>

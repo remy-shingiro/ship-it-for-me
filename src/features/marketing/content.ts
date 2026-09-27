@@ -14,10 +14,10 @@ export const valuePoints = [
 ] as const;
 
 export const processSteps = [
-  { number: "01", title: "Tell us what you need", description: "Share a product name, link, image, quantity, specifications and any other useful requirements." },
-  { number: "02", title: "We assess the request", description: "The team reviews the details and determines an appropriate sourcing approach. Not every request can be fulfilled." },
-  { number: "03", title: "We explore sourcing options", description: "The team works through its sourcing network in China, Dubai or Uganda to explore potential options." },
-  { number: "04", title: "We coordinate next steps", description: "If an option is available, the team shares relevant information so you can decide how to proceed." },
+  { number: "01", title: "Tell us what you need", description: "Share a product name, link or image, the quantity you need and any requirements you already know." },
+  { number: "02", title: "We assess the request", description: "The team reviews the details and considers what sourcing approach may be available. Not every request can be fulfilled." },
+  { number: "03", title: "We explore sourcing options", description: "The team checks possible options through sourcing agents in China, Dubai or Uganda." },
+  { number: "04", title: "We coordinate next steps", description: "If an option is available, the team shares relevant details so you can decide how to proceed." },
 ] as const;
 
 export const sourceCategories = [
@@ -26,9 +26,9 @@ export const sourceCategories = [
 ] as const;
 
 export const locations = [
-  { name: "China", href: "/locations/china", slug: "china", index: "01", description: "Explore product requests for sourcing through China." },
-  { name: "Dubai", href: "/locations/dubai", slug: "dubai", index: "02", description: "Explore product requests for sourcing through Dubai." },
-  { name: "Uganda", href: "/locations/uganda", slug: "uganda", index: "03", description: "Explore product requests for sourcing through Uganda." },
+  { name: "China", href: "/locations/china", slug: "china", index: "01", description: "Send us a product request for sourcing through our network in China." },
+  { name: "Dubai", href: "/locations/dubai", slug: "dubai", index: "02", description: "Send us a product request for sourcing through our network in Dubai." },
+  { name: "Uganda", href: "/locations/uganda", slug: "uganda", index: "03", description: "Send us a product request for sourcing through our network in Uganda." },
 ] as const;
 
 export const serviceBenefits = [
@@ -39,11 +39,11 @@ export const serviceBenefits = [
 ] as const;
 
 export const serviceCapabilities = [
-  { number: "01", title: "Product sourcing", description: "Share the product you need and the team can review whether a sourcing option may be available." },
-  { number: "02", title: "International purchasing support", description: "Explore products from international markets through the available sourcing network." },
-  { number: "03", title: "Product and supplier research", description: "Use the details you provide to explore potential products and sourcing options." },
-  { number: "04", title: "Sourcing coordination", description: "Get help clarifying information around an option and understanding the next steps available." },
-  { number: "05", title: "Product request assistance", description: "Share links, images, quantities and specifications so the team can understand what you have in mind." },
+  { number: "01", title: "Identify the product", description: "Send a product name, online link or image so the team can understand what you are looking for." },
+  { number: "02", title: "Share your requirements", description: "Add the quantity, specifications, budget or source country you have in mind. Optional details can be left blank." },
+  { number: "03", title: "Explore sourcing options", description: "The team reviews whether options may be available through agents in China, Dubai or Uganda." },
+  { number: "04", title: "Review available details", description: "If an option is identified, the team shares relevant information to help you assess it." },
+  { number: "05", title: "Discuss next steps", description: "Review the available next steps for your request before deciding how to proceed." },
 ] as const;
 
 export const aboutPrinciples = [

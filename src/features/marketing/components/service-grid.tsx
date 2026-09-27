@@ -18,7 +18,7 @@ export function ServiceGrid() {
           {serviceCapabilities.map((service) => (
             <li key={service.number}>
               <Card className="h-full">
-                <span aria-hidden="true" className="text-sm font-bold tracking-widest text-accent">{service.number}</span>
+                <span aria-hidden="true" className="text-sm font-bold tracking-widest text-primary">{service.number}</span>
                 <Heading as="h3" className="mt-4 text-lg">{service.title}</Heading>
                 <p className="mb-0 mt-2 text-sm leading-6 text-muted">{service.description}</p>
               </Card>

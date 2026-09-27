@@ -23,9 +23,9 @@ export default function HomePage() {
     <>
       <Hero />
       <ValueStrip />
+      <LocationGrid />
       <HowItWorks />
       <SourceCategories />
-      <LocationGrid />
       <WhyChooseUs />
       <FaqSection items={homepageFaqs} />
       <FinalCta whatsappHref={siteConfig.whatsappHref} />

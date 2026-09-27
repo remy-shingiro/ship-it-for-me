@@ -62,7 +62,7 @@ export function ImagePicker({ images, error, onAdd, onRemove, onError }: ImagePi
     <div className="grid gap-2">
       <span className="text-sm font-medium text-foreground">Product images <span className="font-normal text-muted">(optional)</span></span>
       <p className="m-0 text-sm leading-6 text-muted" id="product-images-hint">
-        Add up to 5 JPG, PNG or WebP images, 5 MB each. Images are uploaded securely with your request.
+        Choose up to 5 JPG, PNG or WebP images, up to 5 MB each.
       </p>
       <input
         accept="image/jpeg,image/png,image/webp"
@@ -74,9 +74,12 @@ export function ImagePicker({ images, error, onAdd, onRemove, onError }: ImagePi
         onChange={handleSelection}
         type="file"
       />
-      <label className="inline-flex min-h-11 w-fit cursor-pointer items-center justify-center rounded-control border border-border-strong bg-surface px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-muted peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary" htmlFor="product-images">
-        Choose images
-      </label>
+      <div className="peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary flex flex-wrap items-center justify-between gap-3 rounded-control border border-border bg-surface-muted p-3 sm:p-4">
+        <span className="text-sm text-muted">Add photos to help identify the product.</span>
+        <label className="inline-flex min-h-11 w-fit cursor-pointer items-center justify-center rounded-control border border-border-strong bg-surface px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-muted" htmlFor="product-images">
+          Choose images
+        </label>
+      </div>
       {error ? <p className="m-0 text-sm text-error" id="product-images-error" role="alert">{error}</p> : null}
       {images.length ? (
         <ul aria-label="Selected product images" className="mt-2 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3">

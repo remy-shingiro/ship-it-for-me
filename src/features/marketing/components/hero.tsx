@@ -27,9 +27,9 @@ export function Hero() {
     <section aria-labelledby="home-title" className="hero-section">
       <div className="site-container hero-grid">
         <div className="hero-copy">
-          <p className="eyebrow">International sourcing, with local support</p>
-          <Heading as="h1" className="display-title" id="home-title">Get the products you need from China, Dubai and Uganda.</Heading>
-          <p className="body-copy">Tell us what you are looking for. Our team works with sourcing agents in those markets and helps arrange the next steps to Rwanda, so you do not have to manage every detail alone.</p>
+          <p className="eyebrow">Product sourcing support for customers in Rwanda</p>
+          <Heading as="h1" className="display-title" id="home-title">Need a product from China, Dubai or Uganda?</Heading>
+          <p className="body-copy">Tell us what you are looking for. We review your request, explore options through sourcing agents in these markets and help coordinate the next steps.</p>
           <div className="hero-actions">
             <ButtonLink href="/request">Request a Quote <span aria-hidden="true">&#8599;</span></ButtonLink>
             <ButtonLink href="/how-it-works" variant="secondary">How It Works</ButtonLink>

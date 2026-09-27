@@ -25,7 +25,7 @@ const stepDescriptions = [
   "Share a few details so we can understand the product you have in mind.",
   "Add any preferences that could help us explore the sourcing options.",
   "Choose how you would prefer us to contact you about this request.",
-  "Check the details before continuing.",
+  "Check your details before submitting.",
 ] as const;
 
 const initialDraft: QuoteRequestDraftInput = {
@@ -273,7 +273,8 @@ export function QuoteForm() {
                 />
               </div>
 
-              <div className="sticky bottom-0 z-10 -mx-4 mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-border bg-surface/95 px-4 py-4 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:px-0 sm:pb-0 sm:pt-6 sm:backdrop-blur-none">
+              {step === 3 && submitError ? <p className="mb-0 mt-6 text-center text-sm text-error" role="alert">{submitError}</p> : null}
+              <div className="sticky bottom-0 z-10 -mx-4 mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border bg-surface/95 px-4 py-4 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:px-0 sm:pb-0 sm:pt-6 sm:backdrop-blur-none">
                 <div>
                   {step === 0 ? (
                     <Link className="inline-flex min-h-11 items-center rounded-control px-3 text-sm font-semibold text-muted hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="/">
@@ -281,11 +282,10 @@ export function QuoteForm() {
                     </Link>
                   ) : <Button onClick={goBack} type="button" variant="secondary">Back</Button>}
                 </div>
-                <Button disabled={step === 3 ? isSubmitting : nextDisabled} type="submit">
-                  {step === 3 ? (isSubmitting ? "Submitting…" : "Submit Request") : "Continue"}
+                <Button aria-busy={step === 3 && isSubmitting} disabled={step === 3 ? isSubmitting : nextDisabled} type="submit">
+                  {step === 3 ? (isSubmitting ? "Submitting..." : "Submit Request") : "Continue"}
                 </Button>
               </div>
-              {step === 3 && submitError ? <p className="mt-3 text-center text-sm text-error" role="alert">{submitError}</p> : null}
             </form>
           </Card>
           <p className="mx-auto mt-4 max-w-3xl text-center text-xs leading-5 text-muted">You can review and change your details before submitting.</p>
