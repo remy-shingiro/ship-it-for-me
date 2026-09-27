@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Heading } from "@/components/ui/heading";
-import { Section } from "@/components/ui/section";
+import { QuoteForm } from "@/features/quote-request/components/quote-form";
 
-export const metadata: Metadata = { title: "Request a Quote" };
+export const metadata: Metadata = {
+  title: "Request a Quote",
+  description: "Share the product you need and your sourcing preferences.",
+  robots: { index: false, follow: false },
+};
 
 export default function RequestPage() {
-  return <Section><Heading as="h1" className="text-3xl">Request a Quote</Heading></Section>;
+  return <QuoteForm />;
 }
