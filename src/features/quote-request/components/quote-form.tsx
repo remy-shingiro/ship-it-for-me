@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { PREFERRED_CONTACT_METHODS, type PreferredContactMethod, type SourcingCountry, type Timeline } from "../domain/quote-request";
+import { submitQuoteRequest } from "../actions/submit-quote-request";
+import type { PreferredContactMethod, SourcingCountry, Timeline } from "../domain/quote-request";
 import type { QuoteRequestDraftInput } from "../schemas/quote-request";
 import { ImagePicker, type SelectedProductImage } from "./image-picker";
 import { ContactStep, ProductStep, RequirementsStep, ReviewStep } from "./quote-steps";
@@ -45,6 +46,9 @@ export function QuoteForm() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [images, setImages] = useState<SelectedProductImage[]>([]);
   const [imageError, setImageError] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, startSubmission] = useTransition();
+  const submissionLock = useRef(false);
 
   useEffect(() => {
     headingRef.current?.focus();
@@ -107,8 +111,31 @@ export function QuoteForm() {
       return;
     }
 
-    const contact = PREFERRED_CONTACT_METHODS.find((method) => method === draft.contact.preferredContactMethod);
-    if (contact && methodChosen) router.push(`/request/success?contact=${contact}`);
+    if (!methodChosen || submissionLock.current) return;
+
+    submissionLock.current = true;
+    setSubmitError("");
+
+    const formData = new FormData();
+    formData.set("draft", JSON.stringify(draft));
+    for (const image of images) formData.append("images", image.file);
+
+    startSubmission(async () => {
+      let submitted = false;
+      try {
+        const result = await submitQuoteRequest(formData);
+        if (result.success) {
+          submitted = true;
+          router.push(`/request/success?reference=${encodeURIComponent(result.reference)}`);
+        } else {
+          setSubmitError(result.message);
+        }
+      } catch {
+        setSubmitError("Something went wrong while submitting your request. Please try again.");
+      } finally {
+        if (!submitted) submissionLock.current = false;
+      }
+    });
   }
 
   function goBack() {
@@ -246,9 +273,11 @@ export function QuoteForm() {
                     </Link>
                   ) : <Button onClick={goBack} type="button" variant="secondary">Back</Button>}
                 </div>
-                <Button disabled={nextDisabled} type="submit">{step === 3 ? "Submit Request" : "Continue"}</Button>
+                <Button disabled={step === 3 ? isSubmitting : nextDisabled} type="submit">
+                  {step === 3 ? (isSubmitting ? "Submitting…" : "Submit Request") : "Continue"}
+                </Button>
               </div>
-              {step === 3 ? <p className="mt-3 text-center text-xs leading-5 text-muted">Demo flow only: submitting will not send or save your information.</p> : null}
+              {step === 3 && submitError ? <p className="mt-3 text-center text-sm text-error" role="alert">{submitError}</p> : null}
             </form>
           </Card>
           <p className="mx-auto mt-4 max-w-3xl text-center text-xs leading-5 text-muted">You can review and change your details before submitting.</p>

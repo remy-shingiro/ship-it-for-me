@@ -62,7 +62,7 @@ export function ImagePicker({ images, error, onAdd, onRemove, onError }: ImagePi
     <div className="grid gap-2">
       <span className="text-sm font-medium text-foreground">Product images <span className="font-normal text-muted">(optional)</span></span>
       <p className="m-0 text-sm leading-6 text-muted" id="product-images-hint">
-        Add up to 5 JPG, PNG or WebP images, 5 MB each. They stay on this device in this preview.
+        Add up to 5 JPG, PNG or WebP images, 5 MB each. Images are uploaded securely with your request.
       </p>
       <input
         accept="image/jpeg,image/png,image/webp"

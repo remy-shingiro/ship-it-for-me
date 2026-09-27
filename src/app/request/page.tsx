@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+export const runtime = "nodejs";
+
 export default function RequestPage() {
   return <QuoteForm />;
 }
