@@ -22,12 +22,23 @@ export function LocationCard({ name, href, slug, index, description }: (typeof l
   );
 }
 
-export function LocationGrid() {
+type LocationGridProps = {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+};
+
+export function LocationGrid({
+  id = "locations",
+  eyebrow = "Sourcing locations",
+  title = "Explore the markets we work across.",
+  description = "Tell us which market you have in mind and we can review the request with our sourcing network.",
+}: LocationGridProps) {
   return (
-    <section aria-labelledby="locations-title" className="section-space" id="locations">
+    <section aria-labelledby="locations-title" className="section-space" id={id}>
       <div className="site-container">
-        <SectionHeading id="locations-title" eyebrow="Sourcing locations" title="Explore the markets we work across."
-          description="Tell us which market you have in mind and we can review the request with our sourcing network." />
+        <SectionHeading id="locations-title" eyebrow={eyebrow} title={title} description={description} />
         <div className="location-grid">{locations.map((location) => <LocationCard key={location.href} {...location} />)}</div>
       </div>
     </section>

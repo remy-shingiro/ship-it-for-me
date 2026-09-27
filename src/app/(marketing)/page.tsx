@@ -7,6 +7,7 @@ import { LocationGrid } from "@/features/marketing/components/location-grid";
 import { SourceCategories } from "@/features/marketing/components/source-categories";
 import { ValueStrip } from "@/features/marketing/components/value-strip";
 import { WhyChooseUs } from "@/features/marketing/components/why-choose-us";
+import { getHomepageFaqs } from "@/features/marketing/content";
 import { serverEnv } from "@/lib/env";
 
 const title = "Product sourcing from China, Dubai and Uganda";
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   const digits = serverEnv.whatsappBusinessNumber?.replace(/[^0-9]/g, "");
   const whatsappHref = digits ? "https://wa.me/" + digits : undefined;
+  const homepageFaqs = getHomepageFaqs(Boolean(whatsappHref));
 
   return (
     <>
@@ -31,7 +33,7 @@ export default function HomePage() {
       <SourceCategories />
       <LocationGrid />
       <WhyChooseUs />
-      <FaqSection />
+      <FaqSection items={homepageFaqs} />
       <FinalCta whatsappHref={whatsappHref} />
     </>
   );
