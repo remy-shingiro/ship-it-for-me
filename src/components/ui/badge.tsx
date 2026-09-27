@@ -1,10 +1,5 @@
 import type { HTMLAttributes } from "react";
 
 export function Badge({ className = "", ...props }: HTMLAttributes<HTMLSpanElement>) {
-  return (
-    <span
-      className={`inline-flex items-center rounded-sm bg-primary/10 px-2 py-1 text-xs font-medium text-primary ${className}`}
-      {...props}
-    />
-  );
+  return <span className={"inline-flex items-center rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary " + className} {...props} />;
 }

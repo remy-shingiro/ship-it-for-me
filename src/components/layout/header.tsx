@@ -1,32 +1,29 @@
 import Link from "next/link";
+import { navigationLinks } from "@/features/marketing/content";
+import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/ui/container";
 import { siteName } from "@/lib/site";
 import { MobileNav } from "./mobile-nav";
 
-const links = [
-  ["How It Works", "/how-it-works"],
-  ["What We Source", "/services"],
-  ["Locations", "/locations"],
-  ["About", "/about"],
-  ["FAQ", "/faq"],
-] as const;
-
 export function Header() {
   return (
-    <header className="border-b border-border bg-white">
-      <Container className="flex min-h-16 items-center justify-between gap-6">
-        <Link className="shrink-0 font-semibold text-foreground" href="/">
-          {siteName}
+    <header className="site-header">
+      <Container className="flex min-h-20 items-center justify-between gap-4 py-3">
+        <Link aria-label={siteName + " home"} className="brand-lockup" href="/">
+          <span aria-hidden="true" className="brand-mark">
+            <svg fill="none" height="20" viewBox="0 0 24 24" width="20">
+              <path d="M4 16h5l3-8h8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+              <circle cx="4" cy="16" r="1.5" fill="currentColor" />
+              <circle cx="20" cy="8" r="1.5" fill="currentColor" />
+            </svg>
+          </span>
+          <span className="brand-name">{siteName}</span>
         </Link>
-        <nav aria-label="Main navigation" className="hidden items-center gap-5 sm:flex">
-          {links.map(([label, href]) => (
-            <Link className="text-sm text-foreground hover:text-primary" href={href} key={href}>
-              {label}
-            </Link>
+        <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
+          {navigationLinks.map(({ label, href }) => (
+            <Link className="nav-link" href={href} key={href}>{label}</Link>
           ))}
-          <Link className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90" href="/request">
-            Request a Quote
-          </Link>
+          <ButtonLink className="ml-2" href="/request">Request a Quote</ButtonLink>
         </nav>
         <MobileNav />
       </Container>
