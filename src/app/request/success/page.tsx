@@ -7,6 +7,8 @@ import { Heading } from "@/components/ui/heading";
 
 export const metadata: Metadata = {
   title: "Request Received",
+  description: "Your product sourcing request was received.",
+  alternates: { canonical: "/request/success" },
   robots: { index: false, follow: false },
 };
 

@@ -1,28 +1,26 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import type { ReactNode } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
-import { publicEnv } from "@/lib/env";
-import { siteName } from "@/lib/site";
+import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(publicEnv.siteUrl),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: siteName,
-    template: "%s | " + siteName,
+    default: siteConfig.name,
+    template: "%s | " + siteConfig.name,
   },
   description: "Product sourcing and procurement services.",
   openGraph: {
     type: "website",
-    url: publicEnv.siteUrl,
-    siteName,
-    title: siteName,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: siteConfig.name,
     description: "Product sourcing and procurement services.",
   },
 };
@@ -35,7 +33,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased`}>
+      <body className={`${geistSans.variable} min-h-screen antialiased`}>
         <a className="sr-only focus:not-sr-only" href="#main-content">
           Skip to content
         </a>

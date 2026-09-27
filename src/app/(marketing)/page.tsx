@@ -8,22 +8,16 @@ import { SourceCategories } from "@/features/marketing/components/source-categor
 import { ValueStrip } from "@/features/marketing/components/value-strip";
 import { WhyChooseUs } from "@/features/marketing/components/why-choose-us";
 import { getHomepageFaqs } from "@/features/marketing/content";
-import { serverEnv } from "@/lib/env";
+import { siteConfig } from "@/lib/site";
+import { createPageMetadata } from "@/lib/seo";
 
 const title = "Product sourcing from China, Dubai and Uganda";
 const description = "Tell us what you need. We help customers in Rwanda explore product sourcing options from China, Dubai and Uganda.";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/" },
-  openGraph: { type: "website", url: "/", title, description },
-};
+export const metadata: Metadata = createPageMetadata({ title, description, path: "/" });
 
 export default function HomePage() {
-  const digits = serverEnv.whatsappBusinessNumber?.replace(/[^0-9]/g, "");
-  const whatsappHref = digits ? "https://wa.me/" + digits : undefined;
-  const homepageFaqs = getHomepageFaqs(Boolean(whatsappHref));
+  const homepageFaqs = getHomepageFaqs(siteConfig.whatsappConfigured);
 
   return (
     <>
@@ -34,7 +28,7 @@ export default function HomePage() {
       <LocationGrid />
       <WhyChooseUs />
       <FaqSection items={homepageFaqs} />
-      <FinalCta whatsappHref={whatsappHref} />
+      <FinalCta whatsappHref={siteConfig.whatsappHref} />
     </>
   );
 }

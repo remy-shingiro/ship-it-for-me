@@ -41,7 +41,7 @@ export function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>� {new Date().getFullYear()} {siteName}</span>
+          <span>© {new Date().getFullYear()} {siteName}</span>
           <span>Product sourcing for Rwanda</span>
         </div>
       </Container>

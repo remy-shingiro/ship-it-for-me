@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { publicEnv } from "@/lib/env";
-import { siteName } from "@/lib/site";
+import { siteConfig } from "@/lib/site";
 
 type PageMetadataInput = {
   title: string;
@@ -9,7 +8,7 @@ type PageMetadataInput = {
 };
 
 export function createPageMetadata({ title, description, path }: PageMetadataInput): Metadata {
-  const url = new URL(path, publicEnv.siteUrl).toString();
+  const url = new URL(path, siteConfig.url).toString();
 
   return {
     title,
@@ -17,9 +16,9 @@ export function createPageMetadata({ title, description, path }: PageMetadataInp
     alternates: { canonical: url },
     openGraph: {
       type: "website",
-      siteName,
+      siteName: siteConfig.name,
       url,
-      title: `${title} | ${siteName}`,
+      title: `${title} | ${siteConfig.name}`,
       description,
     },
   };

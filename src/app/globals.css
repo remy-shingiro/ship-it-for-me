@@ -43,7 +43,7 @@
   --color-success: var(--success);
   --color-error: var(--error);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --radius-control: var(--radius-control-value);
   --radius-card: var(--radius-card-value);
   --radius-panel: var(--radius-panel-value);

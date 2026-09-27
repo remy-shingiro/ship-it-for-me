@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { useEffect, useRef, type ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
@@ -34,6 +32,8 @@ export function ImagePicker({ images, error, onAdd, onRemove, onError }: ImagePi
     for (const file of Array.from(input.files ?? [])) {
       if (!allowedTypes.has(file.type)) {
         issues.push(`${file.name}: choose a JPG, PNG or WebP image.`);
+      } else if (file.size === 0) {
+        issues.push(`${file.name}: choose a non-empty image.`);
       } else if (file.size > maxFileBytes) {
         issues.push(`${file.name}: image must be 5 MB or smaller.`);
       } else if (slots === 0) {
@@ -77,7 +77,7 @@ export function ImagePicker({ images, error, onAdd, onRemove, onError }: ImagePi
       <label className="inline-flex min-h-11 w-fit cursor-pointer items-center justify-center rounded-control border border-border-strong bg-surface px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-muted peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary" htmlFor="product-images">
         Choose images
       </label>
-      {error ? <p className="m-0 text-sm text-error" id="product-images-error">{error}</p> : null}
+      {error ? <p className="m-0 text-sm text-error" id="product-images-error" role="alert">{error}</p> : null}
       {images.length ? (
         <ul aria-label="Selected product images" className="mt-2 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3">
           {images.map((image) => (

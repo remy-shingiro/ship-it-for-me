@@ -7,7 +7,7 @@ import { RequestDetailsSection } from "@/features/marketing/components/request-d
 import { getHomepageFaqs } from "@/features/marketing/content";
 import { locationRequestDetails } from "@/features/marketing/content/locations";
 import { createPageMetadata } from "@/lib/seo";
-import { serverEnv } from "@/lib/env";
+import { siteConfig } from "@/lib/site";
 
 const title = "How it works";
 const description = "Learn how to share a product request and what happens while the team reviews possible sourcing options.";
@@ -15,7 +15,6 @@ const description = "Learn how to share a product request and what happens while
 export const metadata: Metadata = createPageMetadata({ title, description, path: "/how-it-works" });
 
 export default function HowItWorksPage() {
-  const whatsappDigits = serverEnv.whatsappBusinessNumber?.replace(/\D/g, "");
   return (
     <>
       <PageHero
@@ -36,7 +35,7 @@ export default function HowItWorksPage() {
       />
       <FaqSection
         description="A few answers about sharing a product request."
-        items={getHomepageFaqs(Boolean(whatsappDigits))}
+        items={getHomepageFaqs(siteConfig.whatsappConfigured)}
         title="Before you send a request"
       />
       <FinalCta title="Ready to tell us what you need?" description="Share the product details you have and the team can review your request." />

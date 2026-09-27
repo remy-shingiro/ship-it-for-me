@@ -3,8 +3,8 @@ import { FaqCategoryList } from "@/features/marketing/components/faq-category-li
 import { FinalCta } from "@/features/marketing/components/final-cta";
 import { PageHero } from "@/features/marketing/components/page-hero";
 import { getFaqCategories } from "@/features/marketing/content";
-import { serverEnv } from "@/lib/env";
 import { createPageMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site";
 
 const title = "Frequently asked questions";
 const description = "Answers about product requests, sourcing locations, pricing and the request process.";
@@ -12,8 +12,7 @@ const description = "Answers about product requests, sourcing locations, pricing
 export const metadata: Metadata = createPageMetadata({ title, description, path: "/faq" });
 
 export default function FAQPage() {
-  const whatsappConfigured = Boolean(serverEnv.whatsappBusinessNumber?.replace(/\D/g, ""));
-  const categories = getFaqCategories(whatsappConfigured);
+  const categories = getFaqCategories(siteConfig.whatsappConfigured);
 
   return (
     <>

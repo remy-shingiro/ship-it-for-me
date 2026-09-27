@@ -9,10 +9,12 @@ import {
 const optionalText = (maxLength: number) =>
   z.string().trim().max(maxLength).optional().or(z.literal(""));
 
+const httpUrl = z.string().url().max(2048).refine((value) => /^https?:\/\//i.test(value));
+
 export const quoteRequestDraftSchema = z.object({
   product: z.object({
     name: z.string().trim().min(1).max(120),
-    url: z.string().url().max(2048).optional().or(z.literal("")),
+    url: httpUrl.optional().or(z.literal("")),
     quantity: z.number().int().min(1).max(10_000),
     description: optionalText(2_000),
   }),

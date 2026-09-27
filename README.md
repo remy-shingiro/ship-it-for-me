@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-Copy `.env.example` to `.env.local` when configuring the project. The site URL defaults to `http://localhost:3000`. Firebase Admin is initialized lazily by trusted server code; configure `FIREBASE_PROJECT_ID` and either a service-account email/private key pair or Application Default Credentials before submitting quote requests. Set `FIREBASE_STORAGE_BUCKET` to the Firebase Storage bucket name to accept product images. Never prefix Firebase Admin credentials with `NEXT_PUBLIC_`.
+Copy `.env.example` to `.env.local` when configuring the project. Set `NEXT_PUBLIC_SITE_URL` to the production HTTPS origin before deployment. The company name is intentionally centralized as a placeholder in `src/lib/site.ts`. Firebase Admin is initialized lazily by trusted server code; configure `FIREBASE_PROJECT_ID` and either a service-account email/private key pair or Application Default Credentials before submitting quote requests. Set `FIREBASE_STORAGE_BUCKET` to the Firebase Storage bucket name to accept product images. `WHATSAPP_BUSINESS_NUMBER` is optional and enables the WhatsApp contact link when provided. Never prefix Firebase Admin credentials with `NEXT_PUBLIC_`.
 
 ## Architecture
 
@@ -21,7 +21,8 @@ Copy `.env.example` to `.env.local` when configuring the project. The site URL d
 - Client components must not import server environment or Firebase Admin modules.
 - Firebase client reads and writes are denied by `firestore.rules` and `storage.rules`; deploy those rules with `firebase deploy --only firestore:rules,storage` when setting up a Firebase project. Admin SDK writes use server credentials and bypass client security rules.
 - Server Action uploads allow up to 26 MB to carry the existing maximum of five 5 MB images plus form data. Each file is checked again on the server for size, count, MIME type, extension, and image signature.
-- The upload and Firestore commit are separate services. On failures, uploaded objects are deleted before the action reports an error; as with any cross-service flow, an abrupt process termination during that interval can leave an unreferenced Storage object.
+- A per-submit random idempotency key is hashed server-side into a separate Firestore idempotency record. Quote document IDs and Storage paths remain server-generated. Retries of the same wizard submission return the first committed reference instead of creating another request.
+- The upload and Firestore commit are separate services. Definite failures trigger best-effort Storage cleanup; if the Firestore commit outcome is ambiguous, the action checks the idempotency record before deleting files. If that recovery lookup also fails, uploaded files are left in place to avoid deleting attachments that may belong to a committed request. Abrupt process termination can still leave unreferenced Storage objects.
 
 ## Checks
 

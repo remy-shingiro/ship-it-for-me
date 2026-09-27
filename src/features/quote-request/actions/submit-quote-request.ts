@@ -10,10 +10,12 @@ import { quoteRequestDraftSchema, type QuoteRequestDraftInput } from "../schemas
 const maxAttachmentCount = 5;
 const maxAttachmentBytes = 5 * 1024 * 1024;
 const referenceAlphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+const idempotencyKeyPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 const genericSubmissionError = "Something went wrong while submitting your request. Please try again.";
 const invalidSubmissionError = "Please check your request details and selected images.";
 const uploadSubmissionError = "We couldn't upload one or more images. Your request hasn't been submitted. Please try again.";
+const idempotencyConflictError = "Your request details changed after a previous submission attempt. Submit again to send the updated details.";
 
 type SupportedImageType = "image/jpeg" | "image/png" | "image/webp";
 
@@ -28,7 +30,7 @@ export type SubmitQuoteRequestResult =
   | { success: true; reference: string }
   | {
       success: false;
-      code: "VALIDATION_ERROR" | "UPLOAD_ERROR" | "PERSISTENCE_ERROR";
+      code: "VALIDATION_ERROR" | "UPLOAD_ERROR" | "PERSISTENCE_ERROR" | "IDEMPOTENCY_CONFLICT";
       message: string;
     };
 
@@ -46,6 +48,37 @@ function normalizePhone(value: string) {
 function createReference(date: Date) {
   const suffix = Array.from(randomBytes(10), (byte) => referenceAlphabet[byte & 31]).join("");
   return `RQ-${date.getUTCFullYear()}-${suffix}`;
+}
+
+function fingerprintRequest(data: ReturnType<typeof requestData>, attachments: readonly ValidatedAttachment[]) {
+  const hash = createHash("sha256")
+    .update(JSON.stringify(data))
+    .update("\0attachments:")
+    .update(String(attachments.length));
+  for (const attachment of attachments) {
+    hash
+      .update("\0")
+      .update(attachment.contentType)
+      .update("\0")
+      .update(String(attachment.contents.byteLength))
+      .update("\0")
+      .update(attachment.contents);
+  }
+  return hash.digest("hex");
+}
+
+function existingSubmissionResult(
+  record: FirebaseFirestore.DocumentData | undefined,
+  fingerprint: string,
+): SubmitQuoteRequestResult | undefined {
+  if (!record) return undefined;
+  if (record.requestHash !== fingerprint) {
+    return { success: false, code: "IDEMPOTENCY_CONFLICT", message: idempotencyConflictError };
+  }
+  if (typeof record.reference !== "string") {
+    return { success: false, code: "PERSISTENCE_ERROR", message: genericSubmissionError };
+  }
+  return { success: true, reference: record.reference };
 }
 
 function diagnosticCode(error: unknown) {
@@ -162,6 +195,9 @@ function requestData(draft: QuoteRequestDraftInput) {
 export async function submitQuoteRequest(formData: FormData): Promise<SubmitQuoteRequestResult> {
   if (!(formData instanceof FormData)) return validationFailure;
 
+  const idempotencyKey = formData.get("idempotencyKey");
+  if (typeof idempotencyKey !== "string" || !idempotencyKeyPattern.test(idempotencyKey)) return validationFailure;
+
   const draftValue = formData.get("draft");
   if (typeof draftValue !== "string") return validationFailure;
 
@@ -186,6 +222,7 @@ export async function submitQuoteRequest(formData: FormData): Promise<SubmitQuot
 
   const data = requestData(parsedDraft.data);
   if (data.customer.phone.replace(/\D/g, "").length < 5) return validationFailure;
+  const requestHash = fingerprintRequest(data, attachments);
 
   let firestore: ReturnType<typeof getAdminFirestore>;
   try {
@@ -195,12 +232,29 @@ export async function submitQuoteRequest(formData: FormData): Promise<SubmitQuot
     return { success: false, code: "PERSISTENCE_ERROR", message: genericSubmissionError };
   }
 
+  const idempotencyKeyHash = createHash("sha256").update(idempotencyKey.toLowerCase()).digest("hex");
+  const idempotencyRef = firestore.collection("quoteRequestIdempotencyKeys").doc(idempotencyKeyHash);
+
+  try {
+    const existingSnapshot = await idempotencyRef.get();
+    if (existingSnapshot.exists) {
+      return existingSubmissionResult(existingSnapshot.data(), requestHash) ?? {
+        success: false,
+        code: "PERSISTENCE_ERROR",
+        message: genericSubmissionError,
+      };
+    }
+  } catch (error) {
+    logSubmissionFailure("idempotency_lookup", error);
+    return { success: false, code: "PERSISTENCE_ERROR", message: genericSubmissionError };
+  }
+
   const requestRef = firestore.collection("quoteRequests").doc();
   const requestId = requestRef.id;
   const referenceDate = new Date();
   const reference = createReference(referenceDate);
   const createdAt = Timestamp.fromDate(referenceDate);
-  const customerId = createHash("sha256").update(data.customer.phone).digest("hex");
+  const customerId = createHash("sha256").update(data.customer.phone.replace(/\D/g, "")).digest("hex");
   const customerRef = firestore.collection("customers").doc(customerId);
   const eventRef = requestRef.collection("events").doc();
   const uploadedPaths: string[] = [];
@@ -230,7 +284,20 @@ export async function submitQuoteRequest(formData: FormData): Promise<SubmitQuot
   }
 
   try {
-    await firestore.runTransaction(async (transaction) => {
+    const transactionResult = await firestore.runTransaction(async (transaction) => {
+      const existingKey = await transaction.get(idempotencyRef);
+      if (existingKey.exists) {
+        const existingRequestId = existingKey.get("requestId");
+        return {
+          result: existingSubmissionResult(existingKey.data(), requestHash) ?? {
+            success: false as const,
+            code: "PERSISTENCE_ERROR" as const,
+            message: genericSubmissionError,
+          },
+          requestId: typeof existingRequestId === "string" ? existingRequestId : undefined,
+        };
+      }
+
       const customerSnapshot = await transaction.get(customerRef);
       const customerData = {
         name: data.customer.name,
@@ -257,6 +324,13 @@ export async function submitQuoteRequest(formData: FormData): Promise<SubmitQuot
         updatedAt: createdAt,
       });
 
+      transaction.create(idempotencyRef, {
+        requestHash,
+        requestId,
+        reference,
+        createdAt,
+      });
+
       transaction.create(eventRef, { type: "REQUEST_CREATED", createdAt });
 
       for (const attachment of attachments) {
@@ -269,8 +343,36 @@ export async function submitQuoteRequest(formData: FormData): Promise<SubmitQuot
           createdAt,
         });
       }
+
+      return { result: { success: true as const, reference }, requestId };
     });
+
+    if (!transactionResult.result.success) {
+      await deleteUploadedFiles(storageBucket, uploadedPaths, requestId);
+      return transactionResult.result;
+    }
+
+    if (transactionResult.requestId !== requestId) {
+      await deleteUploadedFiles(storageBucket, uploadedPaths, requestId);
+    }
+    return transactionResult.result;
   } catch (error) {
+    // A transaction can commit even if its response is lost. Check before deleting
+    // uploads so a committed request never points at files removed by a retry path.
+    try {
+      const committedSnapshot = await idempotencyRef.get();
+      const committedResult = existingSubmissionResult(committedSnapshot.data(), requestHash);
+      if (committedResult) {
+        if (committedSnapshot.get("requestId") !== requestId) {
+          await deleteUploadedFiles(storageBucket, uploadedPaths, requestId);
+        }
+        return committedResult;
+      }
+    } catch (recoveryError) {
+      logSubmissionFailure("transaction_recovery_lookup", recoveryError, requestId);
+      return { success: false, code: "PERSISTENCE_ERROR", message: genericSubmissionError };
+    }
+
     await deleteUploadedFiles(storageBucket, uploadedPaths, requestId);
     logSubmissionFailure("firestore_transaction", error, requestId);
     return { success: false, code: "PERSISTENCE_ERROR", message: genericSubmissionError };

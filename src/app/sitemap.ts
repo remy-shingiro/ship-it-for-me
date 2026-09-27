@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { publicEnv } from "@/lib/env";
+import { siteConfig } from "@/lib/site";
 
 const paths = [
   "/",
@@ -11,11 +11,10 @@ const paths = [
   "/locations/uganda",
   "/about",
   "/faq",
-  "/request",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return paths.map((path) => ({
-    url: new URL(path, publicEnv.siteUrl).toString(),
+    url: new URL(path, siteConfig.url).toString(),
   }));
 }

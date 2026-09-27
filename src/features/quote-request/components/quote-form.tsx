@@ -49,6 +49,7 @@ export function QuoteForm() {
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, startSubmission] = useTransition();
   const submissionLock = useRef(false);
+  const submissionIntent = useRef<{ signature: string; key: string } | null>(null);
 
   useEffect(() => {
     headingRef.current?.focus();
@@ -119,6 +120,11 @@ export function QuoteForm() {
     const formData = new FormData();
     formData.set("draft", JSON.stringify(draft));
     for (const image of images) formData.append("images", image.file);
+    const signature = JSON.stringify({ draft, imageIds: images.map((image) => image.id) });
+    if (!submissionIntent.current || submissionIntent.current.signature !== signature) {
+      submissionIntent.current = { signature, key: window.crypto.randomUUID() };
+    }
+    formData.set("idempotencyKey", submissionIntent.current.key);
 
     startSubmission(async () => {
       let submitted = false;
@@ -126,8 +132,10 @@ export function QuoteForm() {
         const result = await submitQuoteRequest(formData);
         if (result.success) {
           submitted = true;
+          submissionIntent.current = null;
           router.push(`/request/success?reference=${encodeURIComponent(result.reference)}`);
         } else {
+          if (result.code === "IDEMPOTENCY_CONFLICT") submissionIntent.current = null;
           setSubmitError(result.message);
         }
       } catch {
