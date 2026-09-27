@@ -87,8 +87,9 @@ button, input, select, textarea { font: inherit; }
 .mobile-nav-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 .hero-section { padding-block: clamp(3.5rem, 7vw, 6.5rem); }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: clamp(2.5rem, 5vw, 4.5rem); }
-.hero-copy { display: grid; width: 100%; min-width: 0; justify-items: start; gap: 1.35rem; }
+.hero-grid { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); align-items: center; gap: clamp(2.5rem, 5vw, 4.5rem); }
+.hero-grid > * { min-width: 0; }
+.hero-copy { display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; min-width: 0; justify-items: start; gap: 1.35rem; }
 .hero-copy > .eyebrow, .hero-copy > .display-title, .hero-copy > .body-copy, .hero-copy > .hero-actions, .hero-copy > p { width: 100%; }
 .hero-copy .body-copy { margin: 0; }
 .hero-actions, .final-cta-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; padding-top: .25rem; }
