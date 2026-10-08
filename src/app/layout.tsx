@@ -1,27 +1,26 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import type { ReactNode } from "react";
-import { Geist } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const siteDescription = `${siteConfig.brandName} is a Rwanda-based sourcing and procurement company helping customers source products from China, Dubai, Uganda and other markets.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: siteConfig.name,
-    template: "%s | " + siteConfig.name,
+    default: `${siteConfig.brandName} | Product sourcing in Rwanda`,
+    template: "%s | " + siteConfig.brandName,
   },
-  description: "Product sourcing and procurement services.",
+  description: siteDescription,
   openGraph: {
     type: "website",
     url: siteConfig.url,
-    siteName: siteConfig.name,
-    title: siteConfig.name,
-    description: "Product sourcing and procurement services.",
+    siteName: siteConfig.brandName,
+    title: `${siteConfig.brandName} | Product sourcing in Rwanda`,
+    description: siteDescription,
   },
 };
 
@@ -33,7 +32,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} min-h-screen antialiased`}>
+      <body className="min-h-screen antialiased">
         <a className="sr-only focus:not-sr-only" href="#main-content">
           Skip to content
         </a>

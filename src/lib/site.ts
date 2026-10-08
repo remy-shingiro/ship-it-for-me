@@ -1,14 +1,17 @@
 import "server-only";
-import { publicEnv, serverEnv } from "@/lib/env";
+import { publicEnv } from "@/lib/env";
 
-const whatsappDigits = serverEnv.whatsappBusinessNumber?.replace(/\D/g, "");
+const whatsappNumber = "+250 781 286 272";
+const whatsappDigits = whatsappNumber.replace(/\D/g, "");
 
 export const siteConfig = {
-  name: "Company Name",
+  companyName: "PrimeLink Sourcing Ltd",
+  brandName: "PrimeLink",
+  name: "PrimeLink",
   url: publicEnv.siteUrl,
-  whatsappNumber: serverEnv.whatsappBusinessNumber,
-  whatsappHref: whatsappDigits ? `https://wa.me/${whatsappDigits}` : undefined,
-  whatsappConfigured: Boolean(whatsappDigits),
+  whatsappNumber,
+  whatsappHref: `https://wa.me/${whatsappDigits}`,
+  whatsappConfigured: true,
 } as const;
 
-export const siteName = siteConfig.name;
+export const siteName = siteConfig.brandName;

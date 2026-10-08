@@ -16,7 +16,6 @@ const serverEnvSchema = z.object({
   FIREBASE_CLIENT_EMAIL: optionalString,
   FIREBASE_PRIVATE_KEY: optionalString,
   FIREBASE_STORAGE_BUCKET: optionalString,
-  WHATSAPP_BUSINESS_NUMBER: optionalString,
 });
 
 const parsedPublicEnv = publicEnvSchema.parse({
@@ -28,7 +27,6 @@ const parsedServerEnv = serverEnvSchema.parse({
   FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
   FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
   FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
-  WHATSAPP_BUSINESS_NUMBER: process.env.WHATSAPP_BUSINESS_NUMBER,
 });
 
 export const publicEnv = {
@@ -40,5 +38,4 @@ export const serverEnv = {
   firebaseClientEmail: parsedServerEnv.FIREBASE_CLIENT_EMAIL,
   firebasePrivateKey: parsedServerEnv.FIREBASE_PRIVATE_KEY,
   firebaseStorageBucket: parsedServerEnv.FIREBASE_STORAGE_BUCKET,
-  whatsappBusinessNumber: parsedServerEnv.WHATSAPP_BUSINESS_NUMBER,
 };

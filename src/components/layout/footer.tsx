@@ -2,7 +2,7 @@ import Link from "next/link";
 import { locations, navigationLinks } from "@/features/marketing/content";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/ui/container";
-import { siteName } from "@/lib/site";
+import { siteConfig, siteName } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -20,7 +20,7 @@ export function Footer() {
               </span>
               <span className="brand-name">{siteName}</span>
             </Link>
-            <p className="footer-description">Product sourcing support for customers in Rwanda looking to source from China, Dubai or Uganda.</p>
+            <p className="footer-description">A Rwanda-based sourcing and procurement company helping customers source products from China, Dubai, Uganda and other markets.</p>
           </div>
           <nav aria-label="Footer navigation">
             <h2 className="footer-heading">Explore</h2>
@@ -37,11 +37,11 @@ export function Footer() {
           <div>
             <h2 className="footer-heading">Have a product in mind?</h2>
             <p className="footer-description">Tell us what you are looking for and we can review the sourcing options.</p>
-            <ButtonLink className="mt-5" href="/request" variant="inverse">Request a Quote</ButtonLink>
+            <ButtonLink className="mt-5" href="/request" variant="on-dark">Request a Quote</ButtonLink>
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} {siteName}</span>
+          <span>© {new Date().getFullYear()} {siteConfig.companyName}</span>
           <span>Product sourcing for Rwanda</span>
         </div>
       </Container>

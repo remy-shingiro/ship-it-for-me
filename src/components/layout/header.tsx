@@ -4,6 +4,7 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/ui/container";
 import { siteName } from "@/lib/site";
 import { MobileNav } from "./mobile-nav";
+import { NavigationIcon } from "./navigation-icon";
 
 export function Header() {
   return (
@@ -21,7 +22,7 @@ export function Header() {
         </Link>
         <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
           {navigationLinks.map(({ label, href }) => (
-            <Link className="nav-link" href={href} key={href}>{label}</Link>
+            <Link className="nav-link" href={href} key={href}><NavigationIcon href={href} />{label}</Link>
           ))}
           <ButtonLink className="ml-2" href="/request">Request a Quote</ButtonLink>
         </nav>

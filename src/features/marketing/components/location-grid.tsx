@@ -1,14 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import { locations } from "@/features/marketing/content";
 import { Heading } from "@/components/ui/heading";
+import { CountryFlag } from "./country-flag";
 import { SectionHeading } from "./section-heading";
 
-export function LocationCard({ name, href, slug, index, description }: (typeof locations)[number]) {
+export function LocationCard({ name, country, href, slug, description, imageSrc, imageAlt }: (typeof locations)[number]) {
   return (
-    <Link aria-label={"Learn about sourcing from " + name} className="location-card" href={href}>
-      <div aria-hidden="true" className={"location-art location-art--" + slug}>
-        <span className="location-art-index">SOURCING LOCATION {index}</span>
-        <span className="location-art-orbit" />
+    <Link className="location-card" href={href}>
+      <div className={"location-art location-art--" + slug}>
+        <Image alt={imageAlt} className="location-art-image" fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" src={imageSrc} />
+        <span aria-hidden="true" className="location-art-shade" />
+        <span className="location-country"><CountryFlag country={country} /><span>{country}</span></span>
         <span className="location-art-label">Sourcing from {name}</span>
       </div>
       <div className="location-card-copy">

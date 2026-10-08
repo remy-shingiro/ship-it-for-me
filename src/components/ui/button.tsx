@@ -14,6 +14,7 @@ export function buttonClassName(variant: ButtonVariant, className = "") {
   return [
     "inline-flex min-h-11 items-center justify-center gap-2 rounded-control px-5 py-3 text-sm font-semibold leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
     variants[variant],
+    variant === "on-dark" ? "focus-visible:ring-accent focus-visible:ring-offset-[var(--foreground)]" : "",
     className,
   ].filter(Boolean).join(" ");
 }

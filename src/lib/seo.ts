@@ -16,9 +16,9 @@ export function createPageMetadata({ title, description, path }: PageMetadataInp
     alternates: { canonical: url },
     openGraph: {
       type: "website",
-      siteName: siteConfig.name,
+      siteName: siteConfig.brandName,
       url,
-      title: `${title} | ${siteConfig.name}`,
+      title: `${title} | ${siteConfig.brandName}`,
       description,
     },
   };

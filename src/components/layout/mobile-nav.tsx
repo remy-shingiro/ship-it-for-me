@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { navigationLinks } from "@/features/marketing/content";
 import { ButtonLink } from "@/components/ui/button-link";
+import { NavigationIcon } from "./navigation-icon";
 
 export function MobileNav() {
   const [openPath, setOpenPath] = useState<string | null>(null);
@@ -55,7 +56,7 @@ export function MobileNav() {
         id="mobile-navigation-panel">
         {navigationLinks.map(({ label, href }) => (
           <Link aria-current={pathname === href ? "page" : undefined} className="mobile-nav-link"
-            href={href} key={href} onClick={closeNavigation}>{label}</Link>
+            href={href} key={href} onClick={closeNavigation}><NavigationIcon href={href} />{label}</Link>
         ))}
         <ButtonLink className="mt-2 w-full" href="/request" onClick={closeNavigation}>Request a Quote</ButtonLink>
       </nav>

@@ -1,9 +1,10 @@
 import { ButtonLink } from "@/components/ui/button-link";
 import { Heading } from "@/components/ui/heading";
+import { CountryFlag } from "./country-flag";
 
 function SourcingVisual() {
   return (
-    <div aria-label="Illustration of sourcing connections from China, Dubai and Uganda to Rwanda" className="sourcing-visual" role="img">
+    <div aria-label="Illustration of sourcing connections from China, Dubai in the United Arab Emirates, and Uganda to Rwanda" className="sourcing-visual" role="img">
       <div aria-hidden="true" className="sourcing-grid" />
       <p className="sourcing-kicker">Your request, connected</p>
       <span aria-hidden="true" className="sourcing-orbit" />
@@ -13,10 +14,10 @@ function SourcingVisual() {
         <path d="M148 354C222 307 297 235 370 216" stroke="var(--border-strong)" strokeDasharray="5 8" strokeLinecap="round" strokeWidth="2" />
         <circle cx="370" cy="216" fill="var(--primary)" r="5" />
       </svg>
-      <div className="route-node route-node--china"><span className="route-code">01</span><span>China</span></div>
-      <div className="route-node route-node--dubai"><span className="route-code">02</span><span>Dubai</span></div>
-      <div className="route-node route-node--uganda"><span className="route-code">03</span><span>Uganda</span></div>
-      <div className="route-node route-node--rwanda"><span className="route-code">GO</span><span>Rwanda</span></div>
+      <div className="route-node route-node--china"><CountryFlag country="China" /><span>China</span></div>
+      <div className="route-node route-node--dubai"><CountryFlag country="United Arab Emirates" /><span>Dubai</span></div>
+      <div className="route-node route-node--uganda"><CountryFlag country="Uganda" /><span>Uganda</span></div>
+      <div className="route-node route-node--rwanda"><CountryFlag country="Rwanda" /><span>Rwanda</span></div>
       <div className="sourcing-caption">International sourcing, with local support</div>
     </div>
   );

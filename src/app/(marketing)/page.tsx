@@ -12,7 +12,7 @@ import { siteConfig } from "@/lib/site";
 import { createPageMetadata } from "@/lib/seo";
 
 const title = "Product sourcing from China, Dubai and Uganda";
-const description = "Tell us what you need. We help customers in Rwanda explore product sourcing options from China, Dubai and Uganda.";
+const description = `${siteConfig.brandName} is a Rwanda-based sourcing and procurement company helping customers source products from China, Dubai, Uganda and other markets.`;
 
 export const metadata: Metadata = createPageMetadata({ title, description, path: "/" });
 

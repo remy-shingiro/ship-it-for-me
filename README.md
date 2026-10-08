@@ -1,6 +1,6 @@
-# Kigali-Dubai
+# PrimeLink
 
-Next.js App Router foundation for the Kigali-Dubai sourcing website.
+Next.js App Router website for PrimeLink Sourcing Ltd.
 
 ## Development
 
@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-Copy `.env.example` to `.env.local` when configuring the project. Set `NEXT_PUBLIC_SITE_URL` to the production HTTPS origin before deployment. The company name is intentionally centralized as a placeholder in `src/lib/site.ts`. Firebase Admin is initialized lazily by trusted server code; configure `FIREBASE_PROJECT_ID` and either a service-account email/private key pair or Application Default Credentials before submitting quote requests. Set `FIREBASE_STORAGE_BUCKET` to the Firebase Storage bucket name to accept product images. `WHATSAPP_BUSINESS_NUMBER` is optional and enables the WhatsApp contact link when provided. Never prefix Firebase Admin credentials with `NEXT_PUBLIC_`.
+Copy `.env.example` to `.env.local` when configuring the project. Set `NEXT_PUBLIC_SITE_URL` to the production HTTPS origin before deployment. The PrimeLink brand, legal company name and WhatsApp contact are centralized in `src/lib/site.ts`. Firebase Admin is initialized lazily by trusted server code; configure `FIREBASE_PROJECT_ID` and either a service-account email/private key pair or Application Default Credentials before submitting quote requests. Set `FIREBASE_STORAGE_BUCKET` to the Firebase Storage bucket name to accept product images. Never prefix Firebase Admin credentials with `NEXT_PUBLIC_`.
 
 ## Architecture
 

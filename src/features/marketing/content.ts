@@ -26,9 +26,36 @@ export const sourceCategories = [
 ] as const;
 
 export const locations = [
-  { name: "China", href: "/locations/china", slug: "china", index: "01", description: "Send us a product request for sourcing through our network in China." },
-  { name: "Dubai", href: "/locations/dubai", slug: "dubai", index: "02", description: "Send us a product request for sourcing through our network in Dubai." },
-  { name: "Uganda", href: "/locations/uganda", slug: "uganda", index: "03", description: "Send us a product request for sourcing through our network in Uganda." },
+  {
+    name: "China",
+    country: "China",
+    href: "/locations/china",
+    slug: "china",
+    description: "Send us a product request for sourcing through our network in China.",
+    imageSrc: "/images/markets/china-guangzhou.webp",
+    imageAlt: "Guangzhou skyline near Canton Tower",
+    // Photo by Yue WU: https://unsplash.com/photos/a-city-skyline-towers-over-a-cloudy-day-zQz5l54zhtA
+  },
+  {
+    name: "Dubai",
+    country: "United Arab Emirates",
+    href: "/locations/dubai",
+    slug: "dubai",
+    description: "Send us a product request for sourcing through our network in Dubai.",
+    imageSrc: "/images/markets/dubai-city.webp",
+    imageAlt: "Downtown Dubai skyline in daylight",
+    // Photo by Saj Shafique: https://unsplash.com/photos/city-skyline-under-blue-sky-during-daytime-llqMRxQDYk4
+  },
+  {
+    name: "Uganda",
+    country: "Uganda",
+    href: "/locations/uganda",
+    slug: "uganda",
+    description: "Send us a product request for sourcing through our network in Uganda.",
+    imageSrc: "/images/markets/kampala.webp",
+    imageAlt: "Kampala skyline viewed from Nsambya",
+    // Photo by Robin Kutesa: https://unsplash.com/photos/city-skyline-bathed-in-warm-sunset-light-Q3ymlvOJGFs
+  },
 ] as const;
 
 export const serviceBenefits = [
@@ -104,7 +131,7 @@ export const faqCategories = [
     title: "Contact",
     items: [
       { id: "contact-team", question: "How can I contact the team?", answer: "Send your details through the Request a Quote form and choose a preferred contact method. The team can review the request and follow up using the details you provide." },
-      { id: "whatsapp", question: "Can I use WhatsApp?", answer: "If WhatsApp is offered as a contact option in the request form, you can select it as your preference.", configuredContactOnly: "whatsapp" },
+      { id: "whatsapp", question: "Can I use WhatsApp?", answer: "Yes. You can chat with the team on WhatsApp using the contact button on the site.", configuredContactOnly: "whatsapp" },
     ],
   },
 ] as const satisfies readonly { id: string; title: string; items: readonly FAQItem[] }[];
