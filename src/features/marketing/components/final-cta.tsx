@@ -22,7 +22,7 @@ export function FinalCta({
           <Heading as="h2" className="section-title" id="final-cta-title">{title}</Heading>
           <p className="final-cta-copy">{description}</p>
           <div className="final-cta-actions">
-            <ButtonLink href="/request" variant="inverse">Request a Quote <span aria-hidden="true">&#8599;</span></ButtonLink>
+            <ButtonLink href="/request" variant="on-dark">Request a Quote <span aria-hidden="true">&#8599;</span></ButtonLink>
             {whatsappHref ? <ButtonLink href={whatsappHref} rel="noopener noreferrer" target="_blank" variant="on-dark">Chat on WhatsApp <span aria-hidden="true">&#8599;</span></ButtonLink> : null}
           </div>
         </div>
